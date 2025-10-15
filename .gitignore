@@ -1,6 +1,9 @@
 # output directory
 results/
 
+# CMSSW
+CMSSW_*/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
