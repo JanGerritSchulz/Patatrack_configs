@@ -4,7 +4,7 @@
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v
 # with command line options: step2 --procModifiers alpaka,ngtScouting,phase2CAExtension -s L1P2GT,HLT:75e33,VALIDATION:@hltValidation --conditions auto:phase2_realistic_T33 --datatier DQMIO -n -1 --eventcontent DQMIO --geometry ExtendedRun4D110 --era Phase2C17I13M9 --filein file:step1.root --fileout file:step2_VALIDATION.root --process HLTX --inputCommands=keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT --no_exec
 CONFIGNAME = "PatatrackBase"
-INPUTFILEPATH = "/eos/user/j/jaschulz/cms-ngt/data"
+from ..local_setup import INPUT_FILES_PATH
 
 import FWCore.ParameterSet.Config as cms
 # argument parsing
@@ -26,21 +26,20 @@ if __name__ == "__main__":
     SKIPEVENTS = args.skipevents
 
     if args.multipleFiles:
-        INPUTFILES = cms.untracked.vstring(["file:%s/%s/step2.root" % (INPUTFILEPATH, DATASET)] +
-                                           ["file:%s/%s/step2_%i.root" % (INPUTFILEPATH, DATASET, i) for i in range(9)])
+        INPUTFILES = cms.untracked.vstring(["file:%s/%s/step2.root" % (INPUT_FILES_PATH, DATASET)] +
+                                           ["file:%s/%s/step2_%i.root" % (INPUT_FILES_PATH, DATASET, i) for i in range(9)])
     else:
-        INPUTFILES = cms.untracked.vstring("file:%s/%s/step2.root" % (INPUTFILEPATH, DATASET))
+        INPUTFILES = cms.untracked.vstring("file:%s/%s/step2.root" % (INPUT_FILES_PATH, DATASET))
 
 else:
     DATASET = "TTbar_relval"
     OUTDIR = "."
     NEVENTS = -1
     SKIPEVENTS = 0
-    INPUTFILES = cms.untracked.vstring("file:%s/%s/step2.root" % (INPUTFILEPATH, DATASET)
+    INPUTFILES = cms.untracked.vstring("file:%s/%s/step2.root" % (INPUT_FILES_PATH, DATASET))
 
 from Configuration.Eras.Era_Phase2C17I13M9_cff import Phase2C17I13M9
 from Configuration.ProcessModifiers.alpaka_cff import alpaka
-#from Configuration.ProcessModifiers.phase2CAExtension_cff import phase2CAExtension
 
 process = cms.Process('HLTX',Phase2C17I13M9,alpaka)
 
