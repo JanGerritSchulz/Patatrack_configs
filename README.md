@@ -3,7 +3,7 @@
 Clone the configuration repo:
 ```bash
 git clone https://github.com/JanGerritSchulz/Patatrack_configs.git
-cd Patatrack_confgis
+cd Patatrack_configs
 ```
 
 Setup CMSSW:
