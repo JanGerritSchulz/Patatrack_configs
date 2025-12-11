@@ -68,7 +68,7 @@ else
 fi
 
 # modify the config to allow easy command line options when running cmsRun
-python3 scripts/modifyConfig.py "temp_cfg.py" ${CONFIGNAME}
+python3 scripts/modifyTrackingConfig.py "temp_cfg.py" ${CONFIGNAME}
 
 # delete the temporary config
 rm temp_cfg.py
