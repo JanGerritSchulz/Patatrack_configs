@@ -1,8 +1,10 @@
 # output directory
 results/
+data
 
 # CMSSW
 CMSSW_*/
+*Phase2Timing_resources.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
