@@ -1,0 +1,4 @@
+process.hltPhase2PixelTracksSoA.trackQualityCuts.maxChi2TripletsOrQuadruplets = 7
+process.hltPhase2PixelTracksSoA.trackQualityCuts.maxChi2Quintuplets = 7
+process.hltPhase2PixelTracksSoA.trackQualityCuts.maxChi2 = 7
+process.hltPhase2PixelTracksCAExtension.requireQuadsFromConsecutiveLayers = False
