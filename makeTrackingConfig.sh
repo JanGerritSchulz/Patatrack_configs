@@ -13,8 +13,10 @@ while [[ $# -gt 0 ]]; do
         --custom) mode="customizations" ;;
         *)
             if [[ "$mode" == "customizations" ]]; then
-                while IFS= read -r line; do
-                    CUSTOMIZE+="$line;"
+                while IFS= read -r line || [[ -n "$line" ]]; do
+                    if [[ ! "$line" =~ ^#.*  ]]; then
+                        CUSTOMIZE+="$line;"
+                    fi
                 done < customizations/$1.py
             elif [[ "$mode" == "procModifiers" ]]; then
                 PROCMODIFIERS="${PROCMODIFIERS}$1,"
