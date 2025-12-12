@@ -5,11 +5,19 @@ import argparse
 parser = argparse.ArgumentParser(description="Produce and analyze HLT tracks.")
 parser.add_argument("CONFIGFILE", type=str, help="CMSSW config file to be customized.")
 parser.add_argument("CONFIGNAME", type=str, help="Name of the CMSSW config.")
+parser.add_argument("-c", "--CUSTOMIZATION", type=str, default="NONE", help="Customization of the configuration.")
 args = parser.parse_args()
 
 CONFIGFILE = args.CONFIGFILE
 CONFIGNAME = args.CONFIGNAME
 OUTPUTCONFIG = "config/%s_cfg.py" % CONFIGNAME
+
+# load optional customizations
+if args.CUSTOMIZATION == "NONE":
+    CUSTOMIZATION = ""
+else:
+    with open(args.CUSTOMIZATION, "r") as f:
+        CUSTOMIZATION = f.read()
 
 # dictionary of input lines to the desired list of output lines
 inOutLines = {
@@ -57,6 +65,10 @@ inOutLines = {
         '    NEVENTS = -1',
         '    SKIPEVENTS = 0',
         '    INPUTFILES = cms.untracked.vstring("file:/shared/work/NGT-LST-measurement/data/%s/step2.root" % (DATASET))'
+    ],
+    "# customisation of the process." : [
+        "# customisation of the process.",
+        CUSTOMIZATION
     ]
 }
 

@@ -5,11 +5,19 @@ import argparse
 parser = argparse.ArgumentParser(description="Produce and analyze SimPixelTracks.")
 parser.add_argument("CONFIGFILE", type=str, help="CMSSW config file to be customized.")
 parser.add_argument("CONFIGNAME", type=str, help="Name of the CMSSW config.")
+parser.add_argument("-c", "--CUSTOMIZATION", type=str, default="NONE", help="Customization of the configuration.")
 args = parser.parse_args()
 
 CONFIGFILE = args.CONFIGFILE
 CONFIGNAME = args.CONFIGNAME
 OUTPUTCONFIG = "config/%s_SIM_cfg.py" % CONFIGNAME
+
+# load optional customizations
+if args.CUSTOMIZATION == "NONE":
+    CUSTOMIZATION = ""
+else:
+    with open(args.CUSTOMIZATION, "r") as f:
+        CUSTOMIZATION = f.read()
 
 # dictionary of input lines to the desired list of output lines
 inOutLines = {
@@ -77,7 +85,8 @@ inOutLines = {
         '    process.simPixelTrackAnalyzerPhase2',
         ')',
         'process.schedule.insert(len(process.schedule)-1, process.simPixelTrack_step)',
-        'process.schedule.insert(len(process.schedule)-1, process.validation_step)'
+        'process.schedule.insert(len(process.schedule)-1, process.validation_step)',
+        CUSTOMIZATION
     ],
     "# import of standard configurations" : [
         '# import of standard configurations',
@@ -108,7 +117,7 @@ endlines = [
     '# enable extension in SimPixelTracks',
     'from Configuration.ProcessModifiers.phase2CAExtension_cff import phase2CAExtension',
     'for module in [process.simPixelTrackAnalyzerPhase2, process.simPixelTrackProducerPhase2]:',
-    '    phase2CAExtension.toModify(module, includeOTBarrel = True, includeOTDisks = True)',
+    '    phase2CAExtension.toModify(module, includeOTBarrel = True)  #, includeOTDisks = True',
 ]
 
 # open input file

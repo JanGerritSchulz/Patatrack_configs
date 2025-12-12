@@ -3,7 +3,6 @@
 CONFIGNAME="$1"
 shift
 
-CUSTOMIZE=""
 PROCMODIFIERS=""
 
 mode=""
@@ -13,11 +12,9 @@ while [[ $# -gt 0 ]]; do
         --custom) mode="customizations" ;;
         *)
             if [[ "$mode" == "customizations" ]]; then
-                while IFS= read -r line || [[ -n "$line" ]]; do
-                    if [[ ! "$line" =~ ^#.*  ]]; then
-                        CUSTOMIZE+="$line;"
-                    fi
-                done < customizations/$1.py
+                cat customizations/$1.py >> temp_custom.py
+                echo "" >> temp_custom.py
+                echo "" >> temp_custom.py
             elif [[ "$mode" == "procModifiers" ]]; then
                 PROCMODIFIERS="${PROCMODIFIERS}$1,"
             fi ;;
@@ -26,7 +23,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 PROCMODIFIERS=${PROCMODIFIERS%,}
-# CUSTOMIZE=${CUSTOMIZE%;}
 
 
 # create the config file without procModifiers
@@ -45,7 +41,6 @@ if [ ! "$PROCMODIFIERS" ];then
          --python_filename "temp_cfg.py" \
          --process HLTX \
          --inputCommands='keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT' \
-         --customise_commands="$CUSTOMIZE" \
          --no_exec
 else
     cmsDriver.py step_2 -s L1P2GT,HLT:75e33_trackingOnly,VALIDATION:@hltValidation \
@@ -62,16 +57,16 @@ else
          --python_filename "temp_cfg.py" \
          --process HLTX \
          --inputCommands='keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT' \
-         --customise_commands="$CUSTOMIZE" \
          --no_exec \
          --procModifiers $PROCMODIFIERS
 fi
 
 # modify the config to allow easy command line options when running cmsRun
-python3 scripts/modifyTrackingConfig.py "temp_cfg.py" ${CONFIGNAME}
+python3 scripts/modifyTrackingConfig.py "temp_cfg.py" ${CONFIGNAME} -c temp_custom.py
 
-# delete the temporary config
+# delete the temporary files
 rm temp_cfg.py
+rm temp_custom.py
 
 echo "created config file ${CONFIGNAME}_cfg.py"
 echo "procModifiers: ${PROCMODIFIERS}"
