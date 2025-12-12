@@ -94,12 +94,18 @@ This will create the final output file `results/PatatrackIT+3OT/TTbar_200PU/DQM_
 
 ## Instructions for producing `SimPixelTrack` DQM files in Phase-2
 
-Run CMSSW SimPixelTracks (`-n` sets number of events, `-d` the dataset). **Note**, if you are not me, you'll have to change the input files!
+To run the SimPixelTracks in Phase-2, the procedure is analogous to the HLT tracking in the descripted previous section.
+
+First, create the flexible CMSSW config:
+
 ```bash
-cmsRun -n 0 config/fullSimPixelTracks_PatatrackBase.py -n 1000 -d TTbar_200PU
+./makeSimPixelTrackConfig.sh "PatatrackIT+3OT" --procMods phase2CAExtension
 ```
 
-Harvest:
+Note, that again you can specify `--procMods` and `--custom`, but typically less are needed than in the tracking config. **Note**, the Patatrack parameters are read automatically from the `hltPhase2PixelTracksSoA` module. That means, if you modify it using either `procMods` or `custom`izations, the changes will automatically propagated to the SimPixelTracks. The command will produce a config file `config/PatatrackIT+3OT_SIM_cfg.py` (note the additional `_SIM` compared to the tracking config) for SimPixelTracks including the specifications you passed. 
+
+Run the config on the dataset of your choice:
+
 ```bash
-bash config/harvest.sh -d TTbar_200PU -c PatatrackBase
+cmsRun -n 56 config/PatatrackIT+3OT_SIM_cfg.py -d TTbar_200PU [-n $NEVENTS] [-s SKIPPEDEVENTS]
 ```
