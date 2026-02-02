@@ -6,11 +6,13 @@ parser = argparse.ArgumentParser(description="Produce and analyze HLT tracks.")
 parser.add_argument("CONFIGFILE", type=str, help="CMSSW config file to be customized.")
 parser.add_argument("CONFIGNAME", type=str, help="Name of the CMSSW config.")
 parser.add_argument("-c", "--CUSTOMIZATION", type=str, default="NONE", help="Customization of the configuration.")
+parser.add_argument("-p", "--PATH", type=str, default=".", help="Global path to the Patatrack_configs repo.")
 args = parser.parse_args()
 
 CONFIGFILE = args.CONFIGFILE
 CONFIGNAME = args.CONFIGNAME
 OUTPUTCONFIG = "timing/%s_cfg.py" % CONFIGNAME
+PATH = args.PATH
 
 # load optional customizations
 if args.CUSTOMIZATION == "NONE":
@@ -29,7 +31,7 @@ inOutLines = {
         '# get the input files',
         'import glob',
         'INPUTFILES = cms.untracked.vstring()',
-        'INPUTFILES.extend(["file:%s" % f for f in glob.glob("data/%s/step2*.root" % DATASET)])',
+        'INPUTFILES.extend(["file:%s" % f for f in glob.glob("' + PATH + '/data/%s/step2*.root" % DATASET)])',
     ],
     "# customisation of the process." : [
         "# customisation of the process.",
