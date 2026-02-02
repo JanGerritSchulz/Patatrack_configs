@@ -1,6 +1,7 @@
 # output directory
 results/
 data
+timing
 
 # CMSSW
 CMSSW_*/
