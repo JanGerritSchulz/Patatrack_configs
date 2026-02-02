@@ -10,7 +10,7 @@ args = parser.parse_args()
 
 CONFIGFILE = args.CONFIGFILE
 CONFIGNAME = args.CONFIGNAME
-OUTPUTCONFIG = "timing/%s_config.py" % CONFIGNAME
+OUTPUTCONFIG = "timing/%s_cfg.py" % CONFIGNAME
 
 # load optional customizations
 if args.CUSTOMIZATION == "NONE":
@@ -21,6 +21,16 @@ else:
 
 # dictionary of input lines to the desired list of output lines
 inOutLines = {
+    "    fileNames = cms.untracked.vstring('REPLACEDINPUTFILES')," : [
+        "    fileNames = INPUTFILES,"
+    ],
+    "import FWCore.ParameterSet.Config as cms" : [
+        'import FWCore.ParameterSet.Config as cms',
+        '# get the input files',
+        'import glob',
+        'INPUTFILES = cms.untracked.vstring()',
+        'INPUTFILES.extend(["file:%s" % f for f in glob.glob("data/%s/step2*.root" % DATASET)])',
+    ],
     "# customisation of the process." : [
         "# customisation of the process.",
         CUSTOMIZATION
