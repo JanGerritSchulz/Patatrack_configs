@@ -112,6 +112,14 @@ Run the timing on the dataset of your choice:
 
 This will run the timing for three configurations `PatatrackIT+3OT`, `PatatrackIT+2OT` and `PatatrackIT+1OT` on files from the `TTbar_200PU_timing` dataset. There are additional arguments described [here](https://github.com/cms-ngt-hlt/utils/tree/main).
 
+**Note:** When running the very first time on the NGT farm, you will likely get an error. To fix this, go into the newly created `patatrack-scripts` folder, look for `slot.py` and replace line 188 with:
+
+```python
+if 0:
+```
+
+Then, rerun. This of course only needs to be changed once.
+
 
 ## Instructions for producing `SimPixelTrack` DQM files in Phase-2
 
