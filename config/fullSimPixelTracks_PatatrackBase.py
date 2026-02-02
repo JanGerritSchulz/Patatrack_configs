@@ -4,7 +4,6 @@
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v
 # with command line options: step2 --procModifiers alpaka,ngtScouting,phase2CAExtension -s L1P2GT,HLT:75e33,VALIDATION:@hltValidation --conditions auto:phase2_realistic_T33 --datatier DQMIO -n -1 --eventcontent DQMIO --geometry ExtendedRun4D110 --era Phase2C17I13M9 --filein file:step1.root --fileout file:step2_VALIDATION.root --process HLTX --inputCommands=keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT --no_exec
 CONFIGNAME = "PatatrackBase"
-from ..local_setup import INPUT_FILES_PATH
 
 import FWCore.ParameterSet.Config as cms
 # argument parsing
@@ -26,17 +25,17 @@ if __name__ == "__main__":
     SKIPEVENTS = args.skipevents
 
     if args.multipleFiles:
-        INPUTFILES = cms.untracked.vstring(["file:%s/%s/step2.root" % (INPUT_FILES_PATH, DATASET)] +
-                                           ["file:%s/%s/step2_%i.root" % (INPUT_FILES_PATH, DATASET, i) for i in range(9)])
+        INPUTFILES = cms.untracked.vstring(["file:data/%s/step2.root" % (DATASET)] +
+                                           ["file:data/%s/step2_%i.root" % (DATASET, i) for i in range(9)])
     else:
-        INPUTFILES = cms.untracked.vstring("file:%s/%s/step2.root" % (INPUT_FILES_PATH, DATASET))
+        INPUTFILES = cms.untracked.vstring("file:data/%s/step2.root" % (DATASET))
 
 else:
     DATASET = "TTbar_relval"
     OUTDIR = "."
     NEVENTS = -1
     SKIPEVENTS = 0
-    INPUTFILES = cms.untracked.vstring("file:%s/%s/step2.root" % (INPUT_FILES_PATH, DATASET))
+    INPUTFILES = cms.untracked.vstring("file:data/%s/step2.root" % (DATASET))
 
 from Configuration.Eras.Era_Phase2C17I13M9_cff import Phase2C17I13M9
 from Configuration.ProcessModifiers.alpaka_cff import alpaka
@@ -58,10 +57,6 @@ process.load('Configuration.StandardSequences.Validation_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 
-### load the new EDProducer "SimDoubletsProducerPhase2"
-process.load("SimTracker.TrackerHitAssociation.simDoubletsProducerPhase2_cfi")
-### load the new DQM EDAnalyzer "SimDoubletsAnalyzerPhase2"
-process.load("Validation.TrackingMCTruth.simDoubletsAnalyzerPhase2_cfi")
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(NEVENTS),
@@ -172,20 +167,20 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic_T33', ''
 
 
 # enable extension
-# process.simDoubletsProducerPhase2.numLayersOT = 0
-# process.simDoubletsAnalyzerPhase2.numLayersOT = 0
+# process.simPixelTrackProducerPhase2.numLayersOT = 0
+# process.simPixelTrackAnalyzerPhase2.numLayersOT = 0
 
 # Change the CA parameters in the SimPixelTracks
-# process.simDoubletsAnalyzerPhase2.geometry = hltPhase2PixelTracksSoA.geometry
-# process.simDoubletsAnalyzerPhase2.minYsizeB1 = hltPhase2PixelTracksSoA.minYsizeB1
-# process.simDoubletsAnalyzerPhase2.minYsizeB2 = hltPhase2PixelTracksSoA.minYsizeB2
-# process.simDoubletsAnalyzerPhase2.maxDYsize12 = hltPhase2PixelTracksSoA.maxDYsize12
-# process.simDoubletsAnalyzerPhase2.maxDYsize = hltPhase2PixelTracksSoA.maxDYsize
-# process.simDoubletsAnalyzerPhase2.maxDYPred = hltPhase2PixelTracksSoA.maxDYPred
-# process.simDoubletsAnalyzerPhase2.cellZ0Cut = hltPhase2PixelTracksSoA.cellZ0Cut
-# process.simDoubletsAnalyzerPhase2.ptmin = hltPhase2PixelTracksSoA.ptmin
-# process.simDoubletsAnalyzerPhase2.hardCurvCut = hltPhase2PixelTracksSoA.hardCurvCut
-# process.simDoubletsAnalyzerPhase2.minHitsPerNtuplet = hltPhase2PixelTracksSoA.minHitsPerNtuplet
+# process.simPixelTrackAnalyzerPhase2.geometry = hltPhase2PixelTracksSoA.geometry
+# process.simPixelTrackAnalyzerPhase2.minYsizeB1 = hltPhase2PixelTracksSoA.minYsizeB1
+# process.simPixelTrackAnalyzerPhase2.minYsizeB2 = hltPhase2PixelTracksSoA.minYsizeB2
+# process.simPixelTrackAnalyzerPhase2.maxDYsize12 = hltPhase2PixelTracksSoA.maxDYsize12
+# process.simPixelTrackAnalyzerPhase2.maxDYsize = hltPhase2PixelTracksSoA.maxDYsize
+# process.simPixelTrackAnalyzerPhase2.maxDYPred = hltPhase2PixelTracksSoA.maxDYPred
+# process.simPixelTrackAnalyzerPhase2.cellZ0Cut = hltPhase2PixelTracksSoA.cellZ0Cut
+# process.simPixelTrackAnalyzerPhase2.ptmin = hltPhase2PixelTracksSoA.ptmin
+# process.simPixelTrackAnalyzerPhase2.hardCurvCut = hltPhase2PixelTracksSoA.hardCurvCut
+# process.simPixelTrackAnalyzerPhase2.minHitsPerNtuplet = hltPhase2PixelTracksSoA.minHitsPerNtuplet
 
 # Path and EndPath definitions
 process.Phase2L1GTProducer = cms.Path(process.l1tGTProducerSequence)
@@ -234,14 +229,19 @@ process.pTripleTkMuon_5_3p5_2p5_OS_Mass5to17 = cms.Path(process.TripleTkMuon53p5
 process.prevalidation_step = cms.Path(process.prevalidation)
 process.validation_step = cms.EndPath(process.hltvalidation)
 
+
+### load SimPixelTrackProducerPhase2, SimPixelTrackAnalyzerPhase2 and SimPixelTrackFromRecoPixelTrack
+process.load("SimTracker.TrackerHitAssociation.simPixelTrackProducerPhase2_cfi")
+process.load("Validation.TrackingMCTruth.simPixelTrackAnalyzerPhase2_cfi")
 process.load('Validation.RecoTrack.simPixelTrackFromRecoTrackProducerPhase2_cfi')
+
 process.simPixelTracksFromFakePixelTracks = process.simPixelTrackFromRecoTrackProducerPhase2.clone(includeTrueTracks = cms.bool(False))
-process.fakePixelTrackAnalyzer = process.simDoubletsAnalyzerPhase2.clone(folder = cms.string('Tracking/TrackingMCTruth/FakePixelTracks'),
-                                                                        simDoubletsSrc = cms.InputTag('simPixelTracksFromFakePixelTracks'),
+process.fakePixelTrackAnalyzer = process.simPixelTrackAnalyzerPhase2.clone(folder = cms.string('Tracking/TrackingMCTruth/FakePixelTracks'),
+                                                                        simPixelTrackSrc = cms.InputTag('simPixelTracksFromFakePixelTracks'),
                                                                         inputIsRecoTracks = cms.bool(True))
 process.simPixelTracksFromTruePixelTracks = process.simPixelTrackFromRecoTrackProducerPhase2.clone(includeFakeTracks = cms.bool(False))
-process.truePixelTrackAnalyzer = process.simDoubletsAnalyzerPhase2.clone(folder = cms.string('Tracking/TrackingMCTruth/TruePixelTracks'),
-                                                                        simDoubletsSrc = cms.InputTag('simPixelTracksFromTruePixelTracks'),
+process.truePixelTrackAnalyzer = process.simPixelTrackAnalyzerPhase2.clone(folder = cms.string('Tracking/TrackingMCTruth/TruePixelTracks'),
+                                                                        simPixelTrackSrc = cms.InputTag('simPixelTracksFromTruePixelTracks'),
                                                                         inputIsRecoTracks = cms.bool(True))
 process.validation_step = cms.EndPath(
     process.hltSiPhase2RecHits +        # produce the OT RecHits
@@ -255,8 +255,8 @@ process.validation_step = cms.EndPath(
     process.simPixelTracksFromTruePixelTracks +
     process.truePixelTrackAnalyzer +
     # produce and analyze true doublets/Ntuplets
-    process.simDoubletsProducerPhase2 +
-    process.simDoubletsAnalyzerPhase2
+    process.simPixelTrackProducerPhase2 +
+    process.simPixelTrackAnalyzerPhase2
     )
 
 process.DQMoutput_step = cms.EndPath(process.DQMoutput)
