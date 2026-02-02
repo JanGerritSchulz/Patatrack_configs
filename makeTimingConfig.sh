@@ -12,7 +12,9 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --procMods) mode="procModifiers" ;;
         --custom) mode="customizations" ;;
-        --ngt) mode="NGTScouting" ;;
+        --ngt) mode="NGTScouting" 
+            TIMINGMENU="NGTScouting"
+            ;;
         *)
             if [[ "$mode" == "customizations" ]]; then
                 cat customizations/$1.py >> temp_custom.py
@@ -21,8 +23,6 @@ while [[ $# -gt 0 ]]; do
                 CUSTOMIZE="${CUSTOMIZE} $1"
             elif [[ "$mode" == "procModifiers" ]]; then
                 PROCMODIFIERS="${PROCMODIFIERS}$1,"
-            elif [[ "$mode" == "NGTScouting" ]]; then
-                TIMINGMENU="NGTScouting"
             fi ;;
     esac
     shift
