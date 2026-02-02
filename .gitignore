@@ -3,6 +3,9 @@ results/
 data
 timing
 
+# patatrack timing scripts
+patatrack-scripts
+
 # CMSSW
 CMSSW_*/
 *Phase2Timing_resources.json
