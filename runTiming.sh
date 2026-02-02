@@ -18,6 +18,10 @@ GPU_LIST="all"
 DATASET="TTbar_200PU_timing"
 TIMINGMENU="75e33_timing"
 
+jobs_threads_streams_presets=(
+    "16,16,16"
+)
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --gpus)
@@ -36,6 +40,10 @@ while [[ $# -gt 0 ]]; do
         --ngt)
             TIMINGMENU="NGTScouting"
             shift
+            ;;
+        --jts)
+            jobs_threads_streams_presets=("$2")
+            shift 2
             ;;
         *)
             echo "Unknown argument: $1"
@@ -62,12 +70,6 @@ else
     GPU_TAG="gpu${GPU_LIST//,/}"   # e.g. "gpu01" or "gpu23"
 fi
 
-# Add presets here as needed following the "jobs,threads,streams" format
-jobs_threads_streams_presets=(
-    "16,16,16"
-    #"8,32,32"
-    #"8,32,24"
-)
 
 # GPU Monitoring Configuration
 ENABLE_GPU_MONITORING=true  # Set to 'false' to disable GPU memory checks
