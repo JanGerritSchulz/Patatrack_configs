@@ -114,7 +114,7 @@ for config_name in "${hlt_config_names[@]}"; do
     # make the config directory and put there the configuration including the correct input file
     mkdir -p timing/${config_name}/${DATASET}   
     cp timing/${config_name}/${TIMINGMENU}_cfg.py temp_cfg.py
-    echo 'DATASET=' | cat - temp_cfg.py > temp && mv temp timing/${config_name}/${DATASET}/temp_cfg.py
+    echo "DATASET=$DATASET" | cat - temp_cfg.py > temp && mv temp timing/${config_name}/${DATASET}/temp_cfg.py
     cfg="timing/${config_name}/${DATASET}/temp_cfg.py"
 
     for preset in "${jobs_threads_streams_presets[@]}"; do
