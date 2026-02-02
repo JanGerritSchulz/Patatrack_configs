@@ -92,9 +92,30 @@ The CMSSW job will create a DQMIO file in the (newly created) directory `results
 This will create the final output file `results/PatatrackIT+3OT/TTbar_200PU/DQM_Tracking_PatatrackIT+3OT.root` that contains all relevant histograms.
 
 
+## Instructions for producing `HLT timing` in Phase-2
+
+To run the timing in Phase-2, the procedure is similar to the HLT tracking descripted in the previous section.
+
+First, create the CMSSW config:
+
+```bash
+./makeTimingConfig.sh "PatatrackIT+3OT" --procMods phase2CAExtension
+```
+
+Note, that again you can again specify `--procMods` and `--custom`. **Note**, the Patatrack parameters are read automatically from the `hltPhase2PixelTracksSoA` module. That means, if you modify it using either `procMods` or `custom`izations, the changes will automatically propagated to the SimPixelTracks. The command will produce a config file `config/PatatrackIT+3OT_SIM_cfg.py` (note the additional `_SIM` compared to the tracking config) for SimPixelTracks including the specifications you passed. 
+
+Run the timing on the dataset of your choice:
+
+```bash
+./runTiming.sh "PatatrackIT+3OT" "PatatrackIT+2OT" "PatatrackIT+1OT" -d TTbar_200PU_timing
+```
+
+This will run the timing for three configurations `PatatrackIT+3OT`, `PatatrackIT+2OT` and `PatatrackIT+1OT` on files from the `TTbar_200PU_timing` dataset. There are additional arguments described [here](https://github.com/cms-ngt-hlt/utils/tree/main).
+
+
 ## Instructions for producing `SimPixelTrack` DQM files in Phase-2
 
-To run the SimPixelTracks in Phase-2, the procedure is analogous to the HLT tracking in the descripted previous section.
+To run the SimPixelTracks in Phase-2, the procedure is analogous to the HLT tracking descripted in a previous section.
 
 First, create the flexible CMSSW config:
 
@@ -108,4 +129,10 @@ Run the config on the dataset of your choice:
 
 ```bash
 cmsRun -n 56 config/PatatrackIT+3OT_SIM_cfg.py -d TTbar_200PU [-n $NEVENTS] [-s SKIPPEDEVENTS]
+```
+
+The CMSSW job will create a DQMIO file in the (newly created) directory `results/PatatrackIT+3OT/TTbar_200PU`. To harvest, simply run:
+
+```bash
+./runSimPixelTrackHarvesting.sh -d TTbar_200PU -c PatatrackIT+3OT
 ```
