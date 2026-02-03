@@ -96,13 +96,13 @@ This will create the final output file `results/PatatrackIT+3OT/TTbar_200PU/DQM_
 
 To run the timing in Phase-2, the procedure is similar to the HLT tracking descripted in the previous section.
 
-First, create the CMSSW config:
+First, create the CMSSW configs:
 
 ```bash
 ./makeTimingConfig.sh "PatatrackIT+3OT" --procMods phase2CAExtension
 ```
 
-Note, that again you can again specify `--procMods` and `--custom`. **Note**, the Patatrack parameters are read automatically from the `hltPhase2PixelTracksSoA` module. That means, if you modify it using either `procMods` or `custom`izations, the changes will automatically propagated to the SimPixelTracks. The command will produce a config file `config/PatatrackIT+3OT_SIM_cfg.py` (note the additional `_SIM` compared to the tracking config) for SimPixelTracks including the specifications you passed. 
+Note, that again you can again specify `--procMods` and `--custom`. This will create two configuration files one for the `75e33_timing` menu and one for `NGTScouting`. 
 
 Run the timing on the dataset of your choice:
 
@@ -110,7 +110,7 @@ Run the timing on the dataset of your choice:
 ./runTiming.sh "PatatrackIT+3OT" "PatatrackIT+2OT" "PatatrackIT+1OT" -d TTbar_200PU_timing
 ```
 
-This will run the timing for three configurations `PatatrackIT+3OT`, `PatatrackIT+2OT` and `PatatrackIT+1OT` on files from the `TTbar_200PU_timing` dataset. There are additional arguments described [here](https://github.com/cms-ngt-hlt/utils/tree/main).
+This will run the timing for three configurations `PatatrackIT+3OT`, `PatatrackIT+2OT` and `PatatrackIT+1OT` on files from the `TTbar_200PU_timing` dataset. Via the argument `--gpus`, you can specify a list of GPUs to be run on (e.g. `0,3` for running on GPU 0 and 3 only; `""` for running CPU only; by default all GPUs are used). It will run the plain `75e33_timing` menu by default, whereas setting the flag `--ngt` will run the `NGTScouting` menu instead. There are additional arguments described [here](https://github.com/cms-ngt-hlt/utils/tree/main).
 
 **Note:** When running the very first time on the NGT farm, you will likely get an error. To fix this, go into the newly created `patatrack-scripts` folder, look for `slot.py` and replace around line 188:
 

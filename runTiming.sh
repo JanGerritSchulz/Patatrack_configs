@@ -66,23 +66,31 @@ fi
 # Sanitize GPU list for filenames (replace commas with nothing or underscore)
 if [[ "$GPU_LIST" == "all" ]]; then
     GPU_TAG="allGPUs"
+elif [[ "$GPU_LIST" == "" ]]; then
+    GPU_TAG="cpu"
 else
     GPU_TAG="gpu${GPU_LIST//,/}"   # e.g. "gpu01" or "gpu23"
 fi
 
 
 # GPU Monitoring Configuration
-ENABLE_GPU_MONITORING=true  # Set to 'false' to disable GPU memory checks
+ENABLE_GPU_MONITORING=true   # Set to 'false' to disable GPU memory checks
 MONITOR_INTERVAL=1           # Check GPU memory every X seconds
 USE_FLOATING_POINT_MEAN=true # Use 'bc' for a more precise mean; falls back to integer if 'bc' not found
 
+# Check for nvidia-smi
+if ! command -v nvidia-smi &>/dev/null; then
+    echo "Warning: disable GPU Monitoring since 'nvidia-smi' command not found."
+    ENABLE_GPU_MONITORING=false
+fi
+
+if [[ "$GPU_LIST" == "" ]]; then
+    echo "Warning: disable GPU Monitoring since CPU only workflow is run."
+    ENABLE_GPU_MONITORING=false
+fi
+
 # Check prerequisites for GPU Monitoring
 if [[ "$ENABLE_GPU_MONITORING" = true ]]; then
-    # Check for nvidia-smi
-    if ! command -v nvidia-smi &>/dev/null; then
-        echo "Error: GPU Monitoring is enabled, but 'nvidia-smi' command not found. Aborting."
-        exit 1
-    fi
 
     # Check for bc if floating point mean is requested
     if [[ "$USE_FLOATING_POINT_MEAN" = true ]] && ! command -v bc &>/dev/null; then
@@ -215,13 +223,13 @@ for config_name in "${hlt_config_names[@]}"; do
             if ((measurement_count_gpu > 0)); then
               for i in "${!totals[@]}"; do
                 if [[ "$USE_FLOATING_POINT_MEAN" = true ]]; then
-                    $averages[$i]=$(echo "scale=2; $totals[$i] / $measurement_count_gpu" | bc)
+                    averages[$i]=$(echo "scale=2; $totals[$i] / $measurement_count_gpu" | bc)
                     mean_calculation_note="(float using bc)"
                 else
-                    $averages[$i]=$(( $totals[$i] / measurement_count_gpu))
+                    averages[$i]=$(( totals[$i] / measurement_count_gpu))
                     mean_calculation_note="(integer)"
                 fi
-                echo "GPU-$i average: $averages[$i]%"
+                echo "GPU-$i average: ${averages[$i]}%"
               done
             fi
 
