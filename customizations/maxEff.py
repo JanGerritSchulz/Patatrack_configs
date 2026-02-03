@@ -72,9 +72,11 @@ def removeStartingPair(geometry, inner, outer):
             for ik, k in enumerate(geometry.startingPairs):
                 if k != i:
                     newStartingPairs.append(k)
-                    newStartingPairMaxInnerR.append(geometry.startingPairMaxInnerR[ik])
+                    if hasattr(geometry, "startingPairMaxInnerR"):
+                        newStartingPairMaxInnerR.append(geometry.startingPairMaxInnerR[ik])
             geometry.startingPairs = newStartingPairs
-            geometry.startingPairMaxInnerR = newStartingPairMaxInnerR
+            if hasattr(geometry, "startingPairMaxInnerR"):
+                geometry.startingPairMaxInnerR = newStartingPairMaxInnerR
             break
 # remove (2,3)
 removeStartingPair(process.hltPhase2PixelTracksSoA.geometry, 2, 3)
