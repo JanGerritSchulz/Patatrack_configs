@@ -110,7 +110,7 @@ Run the timing on the dataset of your choice:
 ./runTiming.sh "PatatrackIT+3OT" "PatatrackIT+2OT" "PatatrackIT+1OT" -d TTbar_200PU_timing
 ```
 
-This will run the timing for three configurations `PatatrackIT+3OT`, `PatatrackIT+2OT` and `PatatrackIT+1OT` on files from the `TTbar_200PU_timing` dataset. Via the argument `--gpus`, you can specify a list of GPUs to be run on (e.g. `0,3` for running on GPU 0 and 3 only; `""` for running CPU only; by default all GPUs are used). It will run the plain `75e33_timing` menu by default, whereas setting the flag `--ngt` will run the `NGTScouting` menu instead. There are additional arguments described [here](https://github.com/cms-ngt-hlt/utils/tree/main).
+This will run the timing for three configurations `PatatrackIT+3OT`, `PatatrackIT+2OT` and `PatatrackIT+1OT` on files from the `TTbar_200PU_timing` dataset. Via the argument `--gpus`, you can specify a list of GPUs to be run on (e.g. `--gpus 0,3` for running on GPU 0 and 3 only; `--gpus ""` for running CPU only; by default all GPUs are used). It will run the plain `75e33_timing` menu by default, whereas setting the flag `--ngt` will run the `NGTScouting` menu instead. By setting `--jts 8,16,16` you can for example set the number of jobs, threads and streams. There are additional arguments described [here](https://github.com/cms-ngt-hlt/utils/tree/main).
 
 **Note:** When running the very first time on the NGT farm, you will likely get an error. To fix this, go into the newly created `patatrack-scripts` folder, look for `slot.py` and replace around line 188:
 
