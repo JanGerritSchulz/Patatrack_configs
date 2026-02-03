@@ -82,6 +82,6 @@ def removeStartingPair(geometry, inner, outer):
 removeStartingPair(process.hltPhase2PixelTracksSoA.geometry, 2, 3)
 
 ## number of doublets and Ntuplets
-process.hltPhase2PixelTracksSoA.maxNumberOfDoublets = cms.string(str(12*512*1024*2))  # *2
-process.hltPhase2PixelTracksSoA.maxNumberOfTuples = cms.string(str(2*60*1024*4))      # *4
+process.hltPhase2PixelTracksSoA.maxNumberOfDoublets = cms.string(str(6e6))  # 12*512*1024
+process.hltPhase2PixelTracksSoA.maxNumberOfTuples = cms.string(str(200e3))       # 2*60*1024
 process.hltPhase2PixelTracksSoA.avgCellsPerHit = cms.double(20)
