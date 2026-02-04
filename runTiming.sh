@@ -132,8 +132,8 @@ for config_name in "${hlt_config_names[@]}"; do
         echo "  Running with Preset: jobs=$jobs, threads=$threads, streams=$streams"
 
         events=1000
-        logdir="timing/${config_name}/${DATASET}/logs.$TIMINGMENU.${jobs}j.${threads}t.${streams}s.${GPU_TAG}"
-        output_filename="timing/${config_name}/${DATASET}/${TIMINGMENU}_${jobs}j_${threads}t_${streams}s_${GPU_TAG}.json"
+        logdir="timing/${config_name}/${DATASET}/logs.${config_name}.$TIMINGMENU.${jobs}j.${threads}t.${streams}s.${GPU_TAG}"
+        output_filename="timing/${config_name}/${DATASET}/${config_name}_${TIMINGMENU}_${jobs}j_${threads}t_${streams}s_${GPU_TAG}.json"
 
         # Setup patatrack-scripts and log directory
         if [ ! -d 'patatrack-scripts' ]; then
@@ -148,8 +148,8 @@ for config_name in "${hlt_config_names[@]}"; do
         # Run the benchmark
         if [[ "$ENABLE_GPU_MONITORING" = true ]]; then
             # With GPU monitoring
-            CSV_FILE="${logdir}/gpu_memory_${config_name}_${jobs}j_${threads}t_${streams}s.csv"
-            CSV_GPU_FILE="${logdir}/gpu_usage_${config_name}_${jobs}j_${threads}t_${streams}s.csv"
+            CSV_FILE="${logdir}/gpu_memory_${config_name}_${TIMINGMENU}_${jobs}j_${threads}t_${streams}s_${GPU_TAG}.csv"
+            CSV_GPU_FILE="${logdir}/gpu_usage_${config_name}_${TIMINGMENU}_${jobs}j_${threads}t_${streams}s_${GPU_TAG}.csv"
             TMP_LOG_FILE="${logdir}/benchmark.tmp.log"
             echo "elapsed_seconds,memory_mib" >"$CSV_FILE"
             echo "elapsed_seconds,gpus_usage" >"$CSV_GPU_FILE"
