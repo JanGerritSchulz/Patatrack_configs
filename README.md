@@ -1,7 +1,14 @@
 # Patatrack configuration repository
-This repository aims for providing an easy to use workflow for Patatrack Pixel Tracking and an archieve for used configurations (for both HLT Pixel Tracking and SimPixelTracks). Below you can find instructions on how to produce and run the HLT Tracking or SimPixelTracks easily while conserving the configs at one place.
+This repository aims for providing an easy to use workflow for Patatrack Pixel Tracking and an archieve for used configurations (for both HLT Pixel Tracking and SimPixelTracks). Below you can find instructions on how to produce and run the HLT Tracking or SimPixelTracks easily while conserving the configs at one place. 
 
+Please find the various instructions in the respective sections below (expand by clicking on &#9658;):
+
+  
 ## Setup of the repo and CMSSW
+
+<details>
+
+<summary>Instructions</summary>
 
 First, clone this configuration repo:
 ```bash
@@ -61,9 +68,14 @@ ln -s /path/to/your/actual/data data
 ```
 
 The dataset names, `DATASET1` and so on in the tree, could be e.g. `TTbar_200PU`. The repo and config files are setup in such a way that you only need to specify the dataset when running the actual reconstruction. meaning you you can run the same config on different datasets just by changing a flag when running. More on this in the following section.
+</details>
+
 
 
 ## Instructions for producing `HLT Tracking` DQM files in Phase-2
+
+<details>
+<summary>Instructions</summary>
 
 As mentioned, the idea is to easily create flexible config files for CMSSW that you can run on different datasets, different number of events, and even varying the skipping events at the beginning. This is achieved by creating the config files for HLT Tracking using the `makeTrackingConfig.sh` script. You can run it from the command line as follows:
 
@@ -90,9 +102,13 @@ The CMSSW job will create a DQMIO file in the (newly created) directory `results
 ```
 
 This will create the final output file `results/PatatrackIT+3OT/TTbar_200PU/DQM_Tracking_PatatrackIT+3OT.root` that contains all relevant histograms.
+</details>
 
 
 ## Instructions for producing `HLT timing` in Phase-2
+
+<details>
+<summary>Instructions</summary>
 
 To run the timing in Phase-2, the procedure is similar to the HLT tracking descripted in the previous section.
 
@@ -122,9 +138,14 @@ if 0:
 ```
 
 Then, rerun. This of course only needs to be changed once.
+</details>
+
 
 
 ## Instructions for producing `SimPixelTrack` DQM files in Phase-2
+
+<details>
+<summary>Instructions</summary>
 
 To run the SimPixelTracks in Phase-2, the procedure is analogous to the HLT tracking descripted in a previous section.
 
@@ -147,3 +168,4 @@ The CMSSW job will create a DQMIO file in the (newly created) directory `results
 ```bash
 ./runSimPixelTrackHarvesting.sh -d TTbar_200PU -c PatatrackIT+3OT
 ```
+</details>
