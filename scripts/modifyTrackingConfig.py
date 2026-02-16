@@ -82,7 +82,7 @@ inOutLines = {
 endlines = [
     '# additional end lines',
     'if PIXELTRACKNTUPLES:',
-    '    process.TFileService = cms.Service("TFileService", fileName=cms.string(OUTDIR+"/pixelTrackNtuples.root"))',
+    '    process.TFileService = cms.Service("TFileService", fileName=cms.string(OUTDIR+"/pixelTrackNtuples_%s.root" % CONFIGNAME.rsplit("/", 1)[1]))',
     '    process.load("Validation.RecoTrack.pixelTrackNtuplizer_cfi")',
     '    process.ntuplizer_step = cms.EndPath(process.pixelTrackNtuplizer)',
     '    process.schedule.extend([process.ntuplizer_step])',
