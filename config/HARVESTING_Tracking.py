@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: HARVEST -s HARVESTING:@trackingOnlyValidation+@trackingOnlyDQM+postProcessorHLTtrackingSequence -s HARVESTING:@trackingOnlyValidation+@HLTMon+postProcessorHLTtrackingSequence --conditions auto:phase2_realistic_T33 --mc --geometry ExtendedRun4D110 --scenario pp --filetype DQM --era Phase2C17I13M9 -n -1 --dirin results --filein file:PatatrackIT+3OT_allTracks_DQMIO.root
+# with command line options: HARVEST -s HARVESTING:@trackingOnlyValidation+@trackingOnlyDQM+postProcessorHLTtrackingSequence -s HARVESTING:@trackingOnlyValidation+@HLTMon+postProcessorHLTtrackingSequence --conditions auto:phase2_realistic_T35 --mc --geometry ExtendedRun4D110 --scenario pp --filetype DQM --era Phase2C17I13M9 -n -1 --dirin results --filein file:PatatrackIT+3OT_allTracks_DQMIO.root --no_exec
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Phase2C17I13M9_cff import Phase2C17I13M9
@@ -76,7 +76,7 @@ process.configurationMetadata = cms.untracked.PSet(
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic_T33', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic_T35', '')
 
 # Path and EndPath definitions
 process.alcaHarvesting = cms.Path()
