@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 
 parser = argparse.ArgumentParser(description="Produce and analyze SimPixelTracks from truth and recoTracks.")
 parser.add_argument("CONFIGFILE", type=str, help="CMSSW config file to be customized.")
@@ -11,6 +12,8 @@ args = parser.parse_args()
 CONFIGFILE = args.CONFIGFILE
 CONFIGNAME = args.CONFIGNAME
 OUTPUTCONFIG = "config/%s_FULL_cfg.py" % CONFIGNAME
+OUTPUTDIR = OUTPUTCONFIG.rsplit('/', 1)[0]
+os.makedirs(OUTPUTDIR, exist_ok=True)
 
 # load optional customizations
 if args.CUSTOMIZATION == "NONE":

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 
 parser = argparse.ArgumentParser(description="Produce and analyze HLT tracks.")
 parser.add_argument("CONFIGFILE", type=str, help="CMSSW config file to be customized.")
@@ -11,6 +12,9 @@ args = parser.parse_args()
 CONFIGFILE = args.CONFIGFILE
 CONFIGNAME = args.CONFIGNAME
 OUTPUTCONFIG = "config/%s_cfg.py" % CONFIGNAME
+OUTPUTDIR = OUTPUTCONFIG.rsplit('/', 1)[0]
+os.makedirs(OUTPUTDIR, exist_ok=True)
+
 
 # load optional customizations
 if args.CUSTOMIZATION == "NONE":
@@ -45,6 +49,7 @@ inOutLines = {
         '    parser.add_argument("-d", "--dataset", type=str, default="TTbar_relval", help="Dataset to be used. Most have a corresponding directory (default TTbar_relval).")',
         '    parser.add_argument("-n", "--nevents", default=-1, type=int,  help="Number of events (default -1).")',
         '    parser.add_argument("-s", "--skipevents", default=0, type=int,  help="Number of events to skip at the beginning (default 0).")',
+        '    parser.add_argument("--ntuples", action="store_true", default=False,  help="Produce PixelTrack Ntuples (default False).")',
         '    args = parser.parse_args()',
         '',
         '    # create output directory if not there yet',
@@ -54,6 +59,7 @@ inOutLines = {
         '    Path(OUTDIR).mkdir(parents=True, exist_ok=True)',
         '    NEVENTS = args.nevents',
         '    SKIPEVENTS = args.skipevents',
+        '    PIXELTRACKNTUPLES = args.ntuples',
         '',
         '    import glob',
         '    INPUTFILES = cms.untracked.vstring()',
@@ -64,13 +70,23 @@ inOutLines = {
         '    OUTDIR = "."',
         '    NEVENTS = -1',
         '    SKIPEVENTS = 0',
-        '    INPUTFILES = cms.untracked.vstring("file:/shared/work/NGT-LST-measurement/data/%s/step2.root" % (DATASET))'
+        '    INPUTFILES = cms.untracked.vstring("file:/shared/work/NGT-LST-measurement/data/%s/step2.root" % (DATASET))',
+        '    PIXELTRACKNTUPLES = False'
     ],
     "# customisation of the process." : [
         "# customisation of the process.",
         CUSTOMIZATION
     ]
 }
+
+endlines = [
+    '# additional end lines',
+    'if PIXELTRACKNTUPLES:',
+    '    process.TFileService = cms.Service("TFileService", fileName=cms.string(OUTDIR+"/pixelTrackNtuples.root"))',
+    '    process.load("Validation.RecoTrack.pixelTrackNtuplizer_cfi")',
+    '    process.ntuplizer_step = cms.EndPath(process.pixelTrackNtuplizer)',
+    '    process.schedule.extend([process.ntuplizer_step])',
+]
 
 # open input file
 with open(CONFIGFILE,"r") as inFile:
@@ -83,3 +99,6 @@ with open(CONFIGFILE,"r") as inFile:
                     outFile.write(newLine + "\n")
             else:
                 outFile.write(line)
+
+        for line in endlines:
+            outFile.write(line + '\n')

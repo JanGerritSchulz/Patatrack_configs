@@ -18,6 +18,6 @@ cd "results/$cutconfig/$dataset"
 cmsRun ../../../config/HARVESTING_Tracking.py
 
 # rename the output file
-mv DQM_V0001_R000000001__Global__CMSSW_X_Y_Z__RECO.root DQM_Tracking_${cutconfig}.root
+mv DQM_V0001_R000000001__Global__CMSSW_X_Y_Z__RECO.root DQM_Tracking_${cutconfig##*/}.root
 
 cd -

@@ -78,4 +78,4 @@ rm temp_custom.py
 
 echo "created config file ${CONFIGNAME}_cfg.py"
 echo "procModifiers: ${PROCMODIFIERS}"
-echo "customizations: ${CUSTOMIZE}"
+echo "customizations:${CUSTOMIZE}"

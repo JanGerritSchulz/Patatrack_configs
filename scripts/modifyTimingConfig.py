@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 
 parser = argparse.ArgumentParser(description="Produce and analyze HLT tracks.")
 parser.add_argument("CONFIGFILE", type=str, help="CMSSW config file to be customized.")
@@ -12,6 +13,8 @@ args = parser.parse_args()
 CONFIGFILE = args.CONFIGFILE
 CONFIGNAME = args.CONFIGNAME
 OUTPUTCONFIG = "timing/%s_cfg.py" % CONFIGNAME
+OUTPUTDIR = OUTPUTCONFIG.rsplit('/', 1)[0]
+os.makedirs(OUTPUTDIR, exist_ok=True)
 PATH = args.PATH
 
 # load optional customizations
