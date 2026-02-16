@@ -31,7 +31,7 @@ PROCMODIFIERS=${PROCMODIFIERS%,}
 if [ ! "$PROCMODIFIERS" ];then
     cmsDriver.py step_2 -s L1P2GT,HLT:75e33_trackingOnly,VALIDATION:@hltValidation \
          --mc \
-         --conditions auto:phase2_realistic_T33 \
+         --conditions auto:phase2_realistic_T35 \
          --datatier DQMIO \
          -n -1 \
          --eventcontent DQMIO \
@@ -47,7 +47,7 @@ if [ ! "$PROCMODIFIERS" ];then
 else
     cmsDriver.py step_2 -s L1P2GT,HLT:75e33_trackingOnly,VALIDATION:@hltValidation \
          --mc \
-         --conditions auto:phase2_realistic_T33 \
+         --conditions auto:phase2_realistic_T35 \
          --datatier DQMIO \
          -n -1 \
          --eventcontent DQMIO \

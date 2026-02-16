@@ -34,7 +34,7 @@ for MENU in "${TIMINGMENUS[@]}"; do
     if [ ! "$PROCMODIFIERS" ];then
         cmsDriver.py step_2 -s L1P2GT,HLT:$MENU \
             --mc \
-            --conditions auto:phase2_realistic_T33 \
+            --conditions auto:phase2_realistic_T35 \
             -n -1 \
             --eventcontent FEVTDEBUGHLT \
             --geometry ExtendedRun4D110 \
@@ -49,7 +49,7 @@ for MENU in "${TIMINGMENUS[@]}"; do
     else
         cmsDriver.py step_2 -s L1P2GT,HLT:$MENU \
             --mc \
-            --conditions auto:phase2_realistic_T33 \
+            --conditions auto:phase2_realistic_T35 \
             -n -1 \
             --eventcontent FEVTDEBUGHLT \
             --geometry ExtendedRun4D110 \
