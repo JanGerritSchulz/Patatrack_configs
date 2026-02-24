@@ -19,14 +19,14 @@ cd Patatrack_configs
 Then (if you don't have a CMSSW version installed yet), setup CMSSW:
 ```bash
 # default setup
-cmsrel CMSSW_16_0_0_pre1
-cd CMSSW_16_0_0_pre1/src
+cmsrel CMSSW_16_1_0_pre2
+cd CMSSW_16_1_0_pre2/src
 cmsenv
 git cms-init
 
 # ------------------------------------------------------------------------
 # adding SimPixelTracks (can be skipped if you don't need SimPixelTracks)
-git cms-merge-topic JanGerritSchulz:jgs_SimPixelTracks_16_0_0_pre1
+git cms-merge-topic JanGerritSchulz:jgs_SimPixelTracks
 scram b -j 8
 # ------------------------------------------------------------------------
 
@@ -152,10 +152,14 @@ To run the SimPixelTracks in Phase-2, the procedure is analogous to the HLT trac
 First, create the flexible CMSSW config:
 
 ```bash
-./makeSimPixelTrackConfig.sh "PatatrackIT+3OT" --procMods phase2CAExtension
+./makeSimPixelTrackConfig.sh "PatatrackIT+3OT" --procMods phase2CAExtension --custom Unique2_28
 ```
 
-Note, that again you can specify `--procMods` and `--custom`, but typically less are needed than in the tracking config. **Note**, the Patatrack parameters are read automatically from the `hltPhase2PixelTracksSoA` module. That means, if you modify it using either `procMods` or `custom`izations, the changes will automatically propagated to the SimPixelTracks. The command will produce a config file `config/PatatrackIT+3OT_SIM_cfg.py` (note the additional `_SIM` compared to the tracking config) for SimPixelTracks including the specifications you passed. 
+Note, that again you can specify `--procMods` and `--custom`, but typically less are needed than in the tracking config. 
+
+**Note**, if you are using the default Phase-2 configuration, please specify the given customization `--custom Unique2_28`, since the layer-pair (2,28) is defined three times in Patatrack but the SimPixelTracks can only handle one properly. 
+
+**Note also**, the Patatrack parameters are read automatically from the `hltPhase2PixelTracksSoA` module. That means, if you modify it using either `procMods` or `custom`izations, the changes will automatically propagated to the SimPixelTracks. The command will produce a config file `config/PatatrackIT+3OT_SIM_cfg.py` (note the additional `_SIM` compared to the tracking config) for SimPixelTracks including the specifications you passed. 
 
 Run the config on the dataset of your choice:
 
