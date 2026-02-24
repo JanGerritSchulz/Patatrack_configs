@@ -61,10 +61,11 @@ Create a symbolic link `data` in the main directory of the repo that points to t
 └── README.md
 ```
 
-You can create the symbolic link using this command:
+You can create a new dataset and the symbolic link using commands like these:
 
 ```bash
-ln -s /path/to/your/actual/data data
+mkdir data/MyDataset
+ln -s /path/to/your/actual/datafile data/MyDataset/step2.root
 ```
 
 The dataset names, `DATASET1` and so on in the tree, could be e.g. `TTbar_200PU`. The repo and config files are setup in such a way that you only need to specify the dataset when running the actual reconstruction. meaning you you can run the same config on different datasets just by changing a flag when running. More on this in the following section.
